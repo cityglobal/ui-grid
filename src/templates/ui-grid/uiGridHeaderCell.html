@@ -10,6 +10,8 @@
     col-index="renderIndex"
     title="TOOLTIP">
     <span
+      data-text="{{col.colDef.tooltipText}}"
+      toggle="tooltip-right"
       ui-grid-one-bind-id-grid="col.uid + '-header-text'">
       {{ col.displayName CUSTOM_FILTERS }}
     </span>
@@ -19,11 +21,11 @@
       ui-grid-visible="col.sort.direction"
       aria-label="{{getSortDirectionAriaLabel()}}">
       <i
-       ng-class="{ 'ui-grid-icon-up-dir': col.sort.direction == asc, 'ui-grid-icon-down-dir': col.sort.direction == desc, 'ui-grid-icon-blank': !col.sort.direction }"
-       title="{{col.sort.priority ? i18n.headerCell.priority + ' ' + col.sort.priority : null}}"
-       aria-hidden="true">
-       &nbsp;
-     </i>
+        ng-class="{ 'ui-grid-icon-up-dir': col.sort.direction == asc, 'ui-grid-icon-down-dir': col.sort.direction == desc, 'ui-grid-icon-blank': !col.sort.direction }"
+        title="{{col.sort.priority ? i18n.headerCell.priority + ' ' + col.sort.priority : null}}"
+        aria-hidden="true">
+        &nbsp;
+      </i>
     </span>
   </div>
 
