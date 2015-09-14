@@ -2704,7 +2704,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
               function getGridHeight() {
                 var headerHeight = 115,
                   viewportHeight = $( window ).height(),
-                  percentage = 80 / 100,
+                  percentage = 83 / 100,
                   gridHeight
 
                 gridHeight = (viewportHeight - headerHeight) * percentage;
