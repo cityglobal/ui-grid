@@ -2701,6 +2701,17 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                 });
               });
 
+              function getGridHeight() {
+                var headerHeight = 115,
+                  viewportHeight = $( window ).height(),
+                  percentage = 80 / 100,
+                  gridHeight
+
+                gridHeight = (viewportHeight - headerHeight) * percentage;
+
+                return gridHeight;
+              };
+
               // TODO(c0bra): Handle resizing the inner canvas based on the number of elements
               function update() {
                 var ret = '';
@@ -2715,7 +2726,8 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                 //  canvasHeight -= grid.scrollbarHeight;
                 //}
 
-                var viewportHeight = rowContainer.getViewportHeight();
+                var viewportHeight = getGridHeight();
+
                 //shorten the height to make room for a scrollbar placeholder
                 if (colContainer.needsHScrollbarPlaceholder()) {
                   viewportHeight -= grid.scrollbarHeight;
