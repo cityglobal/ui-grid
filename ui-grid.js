@@ -13208,22 +13208,22 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
         importer: {
           noHeaders: 'பத்தியின் தலைப்புகளை பெற இயலவில்லை, கோப்பிற்கு தலைப்பு உள்ளதா?',
           noObjects: 'இலக்குகளை உருவாக்க முடியவில்லை, கோப்பில் தலைப்புகளை தவிர தரவு ஏதேனும் உள்ளதா? ',
-          invalidCsv:	'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - csv',
+          invalidCsv: 'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - csv',
           invalidJson: 'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - json',
           jsonNotArray: 'படித்த கோப்பில் வரிசைகள் உள்ளது, நடைமுறை ரத்து செய் : json'
         },
         pagination: {
-          sizes		: 'உருப்படிகள் / பக்கம்',
-          totalItems	: 'உருப்படிகள் '
+          sizes   : 'உருப்படிகள் / பக்கம்',
+          totalItems  : 'உருப்படிகள் '
         },
         grouping: {
-          group	: 'குழு',
+          group : 'குழு',
           ungroup : 'பிரி',
-          aggregate_count	: 'மதிப்பீட்டு : எண்ணு',
+          aggregate_count : 'மதிப்பீட்டு : எண்ணு',
           aggregate_sum : 'மதிப்பீட்டு : கூட்டல்',
-          aggregate_max	: 'மதிப்பீட்டு : அதிகபட்சம்',
-          aggregate_min	: 'மதிப்பீட்டு : குறைந்தபட்சம்',
-          aggregate_avg	: 'மதிப்பீட்டு : சராசரி',
+          aggregate_max : 'மதிப்பீட்டு : அதிகபட்சம்',
+          aggregate_min : 'மதிப்பீட்டு : குறைந்தபட்சம்',
+          aggregate_avg : 'மதிப்பீட்டு : சராசரி',
           aggregate_remove : 'மதிப்பீட்டு : நீக்கு'
         }
       });
@@ -18175,7 +18175,6 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           grid.api.registerMethodsFromObject(publicApi.methods);
 
           grid.api.core.on.sortChanged( $scope, service.tidyPriorities);
-
         },
 
         defaultGridOptions: function (gridOptions) {
@@ -18562,7 +18561,6 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           if ( typeof(column.grouping) === 'undefined' ){
             return;
           }
-
           delete column.grouping.groupPriority;
           delete column.treeAggregation;
           delete column.customTreeAggregationFinalizer;
@@ -18598,7 +18596,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
             aggregationDef = uiGridTreeBaseService.nativeAggregations()[aggregationType];
           }
 
-          column.treeAggregation = { type: aggregationType, label:  i18nService.get().aggregation[aggregationDef.label] || aggregationDef.label };
+          column.treeAggregation = { type: aggregationType, label: '' };
           column.treeAggregationFn = aggregationDef.aggregationFn;
           column.treeAggregationFinalizerFn = aggregationDef.finalizerFn;
 
@@ -25240,10 +25238,10 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
             if ( typeof(gridOptions.treeCustomAggregations[colDef.treeAggregationType]) !== 'undefined' ){
               col.treeAggregationFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].aggregationFn;
               col.treeAggregationFinalizerFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].finalizerFn;
-              col.treeAggregation.label = gridOptions.treeCustomAggregations[colDef.treeAggregationType].label;
+              col.treeAggregation.label = '';
             } else if ( typeof(service.nativeAggregations()[colDef.treeAggregationType]) !== 'undefined' ){
               col.treeAggregationFn = service.nativeAggregations()[colDef.treeAggregationType].aggregationFn;
-              col.treeAggregation.label = service.nativeAggregations()[colDef.treeAggregationType].label;
+              col.treeAggregation.label = '';
             }
           }
 
@@ -25257,7 +25255,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
             if (typeof(col.treeAggregation) === 'undefined' ){
               col.treeAggregation = {};
             }
-            col.treeAggregation.label = colDef.treeAggregationLabel;
+            col.treeAggregation.label = '';
           }
 
           /**
@@ -25916,7 +25914,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           }
 
           if ( column.treeAggregation && column.treeAggregation.label ){
-            newAggregation.label = column.treeAggregation.label;
+            newAggregation.label = '';
           }
 
           return newAggregation;
@@ -26096,7 +26094,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
             aggregation.col.customTreeAggregationFinalizerFn( aggregation );
           }
           if ( typeof(aggregation.rendered) === 'undefined' ){
-            aggregation.rendered = aggregation.label ? aggregation.label + aggregation.value : aggregation.value;
+            aggregation.rendered = aggregation.value;
           }
         },
 
