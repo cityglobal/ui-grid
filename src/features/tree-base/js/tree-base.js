@@ -606,10 +606,10 @@
           if ( typeof(gridOptions.treeCustomAggregations[colDef.treeAggregationType]) !== 'undefined' ){
             col.treeAggregationFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].aggregationFn;
             col.treeAggregationFinalizerFn = gridOptions.treeCustomAggregations[colDef.treeAggregationType].finalizerFn;
-            col.treeAggregation.label = gridOptions.treeCustomAggregations[colDef.treeAggregationType].label;
+            col.treeAggregation.label = '';
           } else if ( typeof(service.nativeAggregations()[colDef.treeAggregationType]) !== 'undefined' ){
             col.treeAggregationFn = service.nativeAggregations()[colDef.treeAggregationType].aggregationFn;
-            col.treeAggregation.label = service.nativeAggregations()[colDef.treeAggregationType].label;
+            col.treeAggregation.label = '';
           }
         }
 
@@ -623,7 +623,7 @@
           if (typeof(col.treeAggregation) === 'undefined' ){
             col.treeAggregation = {};
           }
-          col.treeAggregation.label = colDef.treeAggregationLabel;
+          col.treeAggregation.label = '';
         }
 
         /**
@@ -1282,7 +1282,7 @@
         }
 
         if ( column.treeAggregation && column.treeAggregation.label ){
-          newAggregation.label = column.treeAggregation.label;
+          newAggregation.label = '';
         }
 
         return newAggregation;
@@ -1462,7 +1462,7 @@
           aggregation.col.customTreeAggregationFinalizerFn( aggregation );
         }
         if ( typeof(aggregation.rendered) === 'undefined' ){
-          aggregation.rendered = aggregation.label ? aggregation.label + aggregation.value : aggregation.value;
+          aggregation.rendered = aggregation.value;
         }
       },
 

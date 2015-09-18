@@ -747,7 +747,7 @@
           aggregationDef = uiGridTreeBaseService.nativeAggregations()[aggregationType];
         }
 
-        column.treeAggregation = { type: aggregationType, label:  i18nService.get().aggregation[aggregationDef.label] || aggregationDef.label };
+        column.treeAggregation = { type: aggregationType, label: '' };
         column.treeAggregationFn = aggregationDef.aggregationFn;
         column.treeAggregationFinalizerFn = aggregationDef.finalizerFn;
 
