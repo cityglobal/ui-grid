@@ -365,7 +365,94 @@
           });
 
         };
-        
+
+        /**
+         * @name autoWidth
+         * @description Resizes the columns to fit the largest content
+         * @param {string} id: Id of the grid it will resize
+         */
+        GridApi.prototype.autoWidth = function(id) {
+
+          var selector = '#' + id + ' .ui-grid-render-container';
+          // Get the parent render container element
+          var renderContainerElm = angular.element('#' + id + ' .ui-grid-render-container')[0];
+
+          angular.forEach(this.grid.columns, function(col) {
+
+            // Don't resize if it's disabled on this column
+            if (col.colDef.enableColumnResizing === false) {
+              return;
+            }
+
+            // Go through the rendered rows and find out the max size for the
+            // data in this column
+            var maxWidth = 0;
+            var xDiff = 0;
+
+            // Get the cell contents so we measure correctly. For the header
+            // cell we have to account for the sort icon and the menu buttons,
+            // if present
+            var cells = renderContainerElm.querySelectorAll('.' + uiGridConstants.COL_CLASS_PREFIX + col.uid + ' .ui-grid-cell-contents');
+            Array.prototype.forEach.call(cells, function(cell) {
+              // Get the cell width
+              // gridUtil.logDebug('width', gridUtil.elementWidth(cell));
+
+              // Account for the menu button if it exists
+              var menuButton;
+              if (angular.element(cell).parent().hasClass('ui-grid-header-cell')) {
+                menuButton = angular.element(cell).parent()[0].querySelectorAll('.ui-grid-column-menu-button');
+              }
+
+              gridUtil.fakeElement(cell, {}, function(newElm) {
+                // Make the element float since it's a div and can expand to
+                // fill its container
+                var e = angular.element(newElm);
+                e.attr('style', 'float: left');
+
+                var width = gridUtil.elementWidth(e);
+
+                if (menuButton) {
+                  var menuButtonWidth = gridUtil.elementWidth(menuButton);
+                  width = width + menuButtonWidth;
+                }
+
+                if (width > maxWidth) {
+                  maxWidth = width;
+                  xDiff = maxWidth - width;
+                }
+              });
+            });
+
+            // check we're not outside the allowable bounds for this column
+            //console.log(constrainWidth(col, maxWidth));
+            col.width = constrainWidth(col, maxWidth);
+            col.hasCustomWidth = true;
+
+          });
+        };
+
+        function refreshCanvas(xDiff) {
+          // Then refresh the grid canvas, rebuilding the styles so that the
+          // scrollbar updates its size
+          uiGridCtrl.grid.refreshCanvas(true).then(function() {
+            uiGridCtrl.grid.queueGridRefresh();
+          });
+        }
+
+        function constrainWidth(col, width) {
+          var newWidth = width;
+
+          // If the new width would be less than the column's allowably
+          // minimum width, don't allow it
+          if (col.minWidth && newWidth < col.minWidth) {
+            newWidth = col.minWidth;
+          }
+          else if (col.maxWidth && newWidth > col.maxWidth) {
+            newWidth = col.maxWidth;
+          }
+
+          return newWidth;
+        }
         return GridApi;
 
       }]);
