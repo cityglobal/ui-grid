@@ -127,6 +127,17 @@
               });
             });
 
+            function getGridHeight() {
+              var headerHeight = 115,
+                  viewportHeight = $( window ).height(),
+                  percentage = 83 / 100,
+                  gridHeight;
+
+                gridHeight = (viewportHeight - headerHeight) * percentage;
+
+                return gridHeight;
+            }
+
             // TODO(c0bra): Handle resizing the inner canvas based on the number of elements
             function update() {
               var ret = '';
@@ -141,7 +152,7 @@
               //  canvasHeight -= grid.scrollbarHeight;
               //}
 
-              var viewportHeight = rowContainer.getViewportHeight();
+              var viewportHeight = getGridHeight();
               //shorten the height to make room for a scrollbar placeholder
               if (colContainer.needsHScrollbarPlaceholder()) {
                 viewportHeight -= grid.scrollbarHeight;
