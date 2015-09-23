@@ -1,5 +1,5 @@
 /*!
- * ui-grid - v3.1.3-93398d9 - 2015-09-23
+ * ui-grid - v3.1.5 - 2015-09-23
  * Copyright (c) 2015 ; License: MIT
  */
 
@@ -6041,8 +6041,8 @@ angular.module('ui.grid')
 (function () {
 
   angular.module('ui.grid')
-    .factory('GridApi', ['$q', '$rootScope', 'uiGridCtrl', 'gridUtil', 'uiGridConstants', 'GridRow', 'uiGridGridMenuService',
-      function ($q, $rootScope, uiGridCtrl, gridUtil, uiGridConstants, GridRow, uiGridGridMenuService) {
+    .factory('GridApi', ['$q', '$rootScope', 'gridUtil', 'uiGridConstants', 'GridRow', 'uiGridGridMenuService',
+      function ($q, $rootScope, gridUtil, uiGridConstants, GridRow, uiGridGridMenuService) {
         /**
          * @ngdoc function
          * @name ui.grid.class:GridApi
