@@ -6479,6 +6479,8 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
             col.width = constrainWidth(col, maxWidth);
             col.hasCustomWidth = true;
 
+            $rootScope.$broadcast('gridUI:autoWidth');
+
           });
         };
 
@@ -13294,22 +13296,22 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
         importer: {
           noHeaders: 'பத்தியின் தலைப்புகளை பெற இயலவில்லை, கோப்பிற்கு தலைப்பு உள்ளதா?',
           noObjects: 'இலக்குகளை உருவாக்க முடியவில்லை, கோப்பில் தலைப்புகளை தவிர தரவு ஏதேனும் உள்ளதா? ',
-          invalidCsv:	'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - csv',
+          invalidCsv: 'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - csv',
           invalidJson: 'சரிவர நடைமுறை படுத்த இயலவில்லை, கோப்பு சரிதானா? - json',
           jsonNotArray: 'படித்த கோப்பில் வரிசைகள் உள்ளது, நடைமுறை ரத்து செய் : json'
         },
         pagination: {
-          sizes		: 'உருப்படிகள் / பக்கம்',
-          totalItems	: 'உருப்படிகள் '
+          sizes   : 'உருப்படிகள் / பக்கம்',
+          totalItems  : 'உருப்படிகள் '
         },
         grouping: {
-          group	: 'குழு',
+          group : 'குழு',
           ungroup : 'பிரி',
-          aggregate_count	: 'மதிப்பீட்டு : எண்ணு',
+          aggregate_count : 'மதிப்பீட்டு : எண்ணு',
           aggregate_sum : 'மதிப்பீட்டு : கூட்டல்',
-          aggregate_max	: 'மதிப்பீட்டு : அதிகபட்சம்',
-          aggregate_min	: 'மதிப்பீட்டு : குறைந்தபட்சம்',
-          aggregate_avg	: 'மதிப்பீட்டு : சராசரி',
+          aggregate_max : 'மதிப்பீட்டு : அதிகபட்சம்',
+          aggregate_min : 'மதிப்பீட்டு : குறைந்தபட்சம்',
+          aggregate_avg : 'மதிப்பீட்டு : சராசரி',
           aggregate_remove : 'மதிப்பீட்டு : நீக்கு'
         }
       });
@@ -18027,8 +18029,8 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
    *
    *  @description Services for grouping features
    */
-  module.service('uiGridGroupingService', ['$q', 'uiGridGroupingConstants', 'gridUtil', 'rowSorter', 'GridRow', 'gridClassFactory', 'i18nService', 'uiGridConstants', 'uiGridTreeBaseService',
-    function ($q, uiGridGroupingConstants, gridUtil, rowSorter, GridRow, gridClassFactory, i18nService, uiGridConstants, uiGridTreeBaseService) {
+  module.service('uiGridGroupingService', ['$q', '$rootScope', 'uiGridGroupingConstants', 'gridUtil', 'rowSorter', 'GridRow', 'gridClassFactory', 'i18nService', 'uiGridConstants', 'uiGridTreeBaseService',
+    function ($q, $rootScope, uiGridGroupingConstants, gridUtil, rowSorter, GridRow, gridClassFactory, i18nService, uiGridConstants, uiGridTreeBaseService) {
 
       var service = {
 
@@ -18183,7 +18185,9 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                  * provided out by getGrouping
                  */
                 setGrouping: function ( config ) {
-                  service.setGrouping(grid, config);
+                  $rootScope.$on('gridUI:autoWidth', function() {
+                    service.setGrouping(grid, config);
+                  });
                 },
 
                 /**
@@ -19173,8 +19177,8 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
    </file>
    </example>
    */
-  module.directive('uiGridGrouping', ['uiGridGroupingConstants', 'uiGridGroupingService', '$templateCache',
-    function (uiGridGroupingConstants, uiGridGroupingService, $templateCache) {
+  module.directive('uiGridGrouping', ['$rootScope', 'uiGridGroupingConstants', 'uiGridGroupingService', '$templateCache',
+    function ($rootScope, uiGridGroupingConstants, uiGridGroupingService, $templateCache) {
       return {
         replace: true,
         priority: 0,
