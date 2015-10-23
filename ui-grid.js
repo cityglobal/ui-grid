@@ -2686,9 +2686,9 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                   //parent controller scrolls
                 }
                 else {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  scrollEvent.fireThrottledScrollingEvent('', scrollEvent);
+                  //event.preventDefault();
+                  //event.stopPropagation();
+                  //scrollEvent.fireThrottledScrollingEvent('', scrollEvent);
                 }
 
               });
