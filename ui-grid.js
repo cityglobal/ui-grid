@@ -2707,7 +2707,10 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                   percentage = 83 / 100,
                   gridHeight;
 
+
+
                 gridHeight = (viewportHeight - headerHeight) * percentage;
+
 
                 return gridHeight;
               }
@@ -2727,6 +2730,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                 //}
 
                 var viewportHeight = getGridHeight();
+                //viewportHeight = '780';
                 //shorten the height to make room for a scrollbar placeholder
                 if (colContainer.needsHScrollbarPlaceholder()) {
                   viewportHeight -= grid.scrollbarHeight;
@@ -3353,7 +3357,15 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
               // Default canvasWidth to the grid width, in case we don't get any column definitions to calculate it from
               grid.canvasWidth = uiGridCtrl.grid.gridWidth;
 
-              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+              //grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+              var headerHeight = 115,
+                viewportHeight = $( window ).height(),
+                percentage = 83 / 10,
+                gridHeight;
+
+
+
+              grid.gridHeight = (viewportHeight - headerHeight) * percentage;
 
               // If the grid isn't tall enough to fit a single row, it's kind of useless. Resize it to fit a minimum number of rows
               if (grid.gridHeight < grid.options.rowHeight && grid.options.enableMinHeightCheck) {
@@ -3407,13 +3419,28 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
 
               $elm.css('height', newHeight + 'px');
 
-              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+
+              var headerHeight = 115,
+                viewportHeight = $( window ).height(),
+                percentage = 83 / 10,
+                gridHeight;
+
+
+              grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
             }
 
             // Resize the grid on window resize events
             function gridResize($event) {
               grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
-              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+
+              var headerHeight = 115,
+                viewportHeight = $( window ).height(),
+                percentage = 83 / 10,
+                gridHeight;
+
+
+              grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
+              //grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
 
               grid.refreshCanvas(true);
             }
@@ -5181,7 +5208,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           var adjustment = self.getViewportAdjustment();
 
           viewPortHeight = viewPortHeight + adjustment.height;
-
+          console.log(viewPortHeight);
           //gridUtil.logDebug('viewPortHeight', viewPortHeight);
 
           return viewPortHeight;
