@@ -5208,7 +5208,6 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           var adjustment = self.getViewportAdjustment();
 
           viewPortHeight = viewPortHeight + adjustment.height;
-          console.log(viewPortHeight);
           //gridUtil.logDebug('viewPortHeight', viewPortHeight);
 
           return viewPortHeight;
