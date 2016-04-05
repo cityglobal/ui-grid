@@ -2701,19 +2701,16 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                 });
               });
 
-              function getGridHeight() {
-                var headerHeight = 115,
-                  viewportHeight = $( window ).height(),
-                  percentage = 83 / 100,
-                  gridHeight;
+              // function getGridHeight() {
+              //   var headerHeight = 115,
+              //     viewportHeight = $( window ).height(),
+              //     percentage = 83 / 100,
+              //     gridHeight;
 
+              //   gridHeight = (viewportHeight - headerHeight) * percentage;
 
-
-                gridHeight = (viewportHeight - headerHeight) * percentage;
-
-
-                return gridHeight;
-              }
+              //   return gridHeight;
+              // }
 
               // TODO(c0bra): Handle resizing the inner canvas based on the number of elements
               function update() {
@@ -2729,7 +2726,9 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
                 //  canvasHeight -= grid.scrollbarHeight;
                 //}
 
-                var viewportHeight = getGridHeight();
+                // var viewportHeight = getGridHeight();
+                var viewportHeight = rowContainer.getViewportHeight();
+
                 //viewportHeight = '780';
                 //shorten the height to make room for a scrollbar placeholder
                 if (colContainer.needsHScrollbarPlaceholder()) {
@@ -3352,7 +3351,24 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
 
             // Initialize the directive
             function init() {
+
               grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
+
+              // Default canvasWidth to the grid width, in case we don't get any column definitions to calculate it from
+              grid.canvasWidth = uiGridCtrl.grid.gridWidth;
+
+              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+
+              // If the grid isn't tall enough to fit a single row, it's kind of useless. Resize it to fit a minimum number of rows
+              if (grid.gridHeight <= grid.options.rowHeight && grid.options.enableMinHeightCheck) {
+                autoAdjustHeight();
+              }
+
+              // Run initial canvas refresh
+              grid.refreshCanvas(true);
+
+
+              /*grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
 
               // Default canvasWidth to the grid width, in case we don't get any column definitions to calculate it from
               grid.canvasWidth = uiGridCtrl.grid.gridWidth;
@@ -3373,7 +3389,8 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
               }
 
               // Run initial canvas refresh
-              grid.refreshCanvas(true);
+              grid.refreshCanvas(true);*/
+
             }
 
             // Set the grid's height ourselves in the case that its height would be unusably small
@@ -3419,30 +3436,32 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
 
               $elm.css('height', newHeight + 'px');
 
+              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
 
-              var headerHeight = 115,
-                viewportHeight = $( window ).height(),
-                percentage = 83 / 10,
-                gridHeight;
+              // var headerHeight = 115,
+              //   viewportHeight = $( window ).height(),
+              //   percentage = 83 / 10,
+              //   gridHeight;
+              // grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
 
-
-              grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
             }
 
             // Resize the grid on window resize events
             function gridResize($event) {
+
               grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
-
-              var headerHeight = 115,
-                viewportHeight = $( window ).height(),
-                percentage = 83 / 10,
-                gridHeight;
-
-
-              grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
-              //grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+              grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
 
               grid.refreshCanvas(true);
+
+              // grid.gridWidth = $scope.gridWidth = gridUtil.elementWidth($elm);
+              // var headerHeight = 115,
+              //   viewportHeight = $( window ).height(),
+              //   percentage = 83 / 10,
+              //   gridHeight;
+              // grid.gridHeight = $scope.gridHeight = (viewportHeight - headerHeight) * percentage;
+              // //grid.gridHeight = $scope.gridHeight = gridUtil.elementHeight($elm);
+              // grid.refreshCanvas(true);
             }
           }
         };
@@ -5208,6 +5227,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
           var adjustment = self.getViewportAdjustment();
 
           viewPortHeight = viewPortHeight + adjustment.height;
+
           //gridUtil.logDebug('viewPortHeight', viewPortHeight);
 
           return viewPortHeight;
@@ -7550,6 +7570,7 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
            */
           baseOptions.onRegisterApi = baseOptions.onRegisterApi || angular.noop();
 
+
           /**
            * @ngdoc object
            * @name data
@@ -8277,10 +8298,11 @@ angular.module('ui.grid').directive('uiGridCell', ['$compile', '$parse', 'gridUt
 
         self.$$canvasHeight =  0;
 
+        // console.log(self.visibleRowCache.length);
         self.visibleRowCache.forEach(function(row){
           self.$$canvasHeight += row.height;
         });
-
+        // console.log('self.$$canvasHeight', self.$$canvasHeight);
 
         self.canvasHeightShouldUpdate = false;
 
